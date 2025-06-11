@@ -62,8 +62,24 @@ $pdo->exec("
 		rules INTEGER,
 		comment TEXT,
 		user_id INTEGER,
+		reserve INTEGER,
         FOREIGN KEY (game_id) REFERENCES games(id)
     );
+
+    CREATE TABLE conversation (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        game_id INTEGER,
+        name TEXT NOT NULL,
+		comment TEXT,
+		user_id INTEGER,
+        FOREIGN KEY (game_id) REFERENCES games(id)
+    );
+	
+	CREATE TABLE admins (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		username TEXT UNIQUE NOT NULL,
+		password TEXT NOT NULL -- hashed with password_hash()
+	);
 ");
 
 echo "Installation complete. Database created.";
