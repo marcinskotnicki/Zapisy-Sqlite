@@ -37,6 +37,7 @@ $pdo->exec("
     CREATE TABLE games (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
 		table_id INTEGER,
+		status INTEGER DEFAULT 2, -- 2=active, 1=deleted visible, 0=deleted invisible
         title TEXT NOT NULL,
 		weight REAL,
 		rating REAL,
@@ -79,6 +80,32 @@ $pdo->exec("
 		username TEXT UNIQUE NOT NULL,
 		email TEXT NOT NULL,
 		password TEXT NOT NULL -- hashed with password_hash()
+	);
+	
+	CREATE TABLE settings (
+		key TEXT PRIMARY KEY,
+		value TEXT
+	);
+	
+	CREATE TABLE pending_action (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		target_table TEXT NOT NULL,    -- 'games' or 'signups'
+		target_id INTEGER NOT NULL,
+		action_type TEXT NOT NULL,     -- 'edit'|'delete'
+		proposer_email TEXT,           -- email to notify (if present)
+		token TEXT NOT NULL,           -- one-time token for confirmation
+		token_expires INTEGER NOT NULL, -- unix timestamp
+		payload TEXT,                  -- JSON of proposed changes (for edit)
+		created_at INTEGER DEFAULT (strftime('%s','now'))
+	);
+	
+	CREATE TABLE email_log (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		to_email TEXT,
+		subject TEXT,
+		body TEXT,
+		sent_at INTEGER DEFAULT (strftime('%s','now')),
+		status TEXT
 	);
 ");
 
