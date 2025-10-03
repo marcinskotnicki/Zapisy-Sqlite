@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_settings'])) {
     </form>
 
     <h2>Events</h2>
-    <p><a href="event_add.php">➕ Add New Event</a></p>
+    <p><a href="add_event.php">➕ Add New Event</a></p>
 
     <p><a href="logout.php">🚪 Log out</a></p>
 </body>

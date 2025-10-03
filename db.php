@@ -7,3 +7,4 @@ function getPDO() {
     }
     return $pdo;
 }
+$pdo=getPDO();

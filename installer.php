@@ -88,7 +88,8 @@ try {
 		);
 		
 		CREATE TABLE settings (
-			key TEXT PRIMARY KEY,
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			key TEXT KEY,
 			value TEXT NOT NULL
 		);
 		
