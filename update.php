@@ -13,7 +13,7 @@ $branch = "main";
 $zipUrl = "https://github.com/$repo/archive/refs/heads/$branch.zip";
 $tmpZip = __DIR__ . '/update_tmp.zip';
 $extractPath = __DIR__ . '/update_tmp/';
-$backupDir = __DIR__ . '/backup_' . date('Ymd_His');
+$backupDir = __DIR__ . '/backup/backup_' . date('Ymd_His');
 
 function rrmdir($dir) {
     if (!is_dir($dir)) return;
@@ -27,12 +27,26 @@ function rrmdir($dir) {
 
 // Step 1: Backup current installation
 mkdir($backupDir);
-$it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
-foreach ($it as $file) {
-    $relPath = substr($file, strlen(__DIR__) + 1);
-    $dest = $backupDir . '/' . $relPath;
-    if ($file->isDir()) mkdir($dest, 0777, true);
-    else copy($file, $dest);
+$iterator = new RecursiveIteratorIterator(
+    new RecursiveDirectoryIterator(__DIR__, RecursiveDirectoryIterator::SKIP_DOTS),
+    RecursiveIteratorIterator::SELF_FIRST
+);
+foreach ($iterator as $file) {
+    $path = $file->getPathname();
+
+    // Skip backup folder and data folder
+    if (str_starts_with($path, $backupDir) || strpos($path, '/data/') !== false || strpos($path, '/backup/') !== false) {
+        continue;
+    }
+
+    // Determine destination path
+    $dest = $backupDir . '/' . $iterator->getSubPathName();
+
+    if ($file->isDir()) {
+        if (!is_dir($dest)) mkdir($dest, 0777, true);
+    } else {
+        copy($path, $dest);
+    }
 }
 echo "Backup created at $backupDir<br>";
 
