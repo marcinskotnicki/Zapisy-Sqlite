@@ -86,7 +86,8 @@ echo "Temporary files cleaned up.<br>";
 // Step 6: Database migrations
 $currentVersion = $pdo->query("SELECT value FROM settings WHERE key='system_version'")->fetchColumn() ?: '1.0';
 $migrationsDir = __DIR__ . '/migrations/';
-
+echo "current database version: ".$currentVersion."<br>";
+$newVersion=$currentVersion;
 $migrations = glob($migrationsDir . '*.php');
 sort($migrations, SORT_NATURAL);
 
@@ -98,6 +99,7 @@ foreach ($migrations as $migration) {
         include $migration;
         $pdo->prepare("UPDATE settings SET value=? WHERE key='system_version'")->execute([$version]);
         echo "Migration $version applied.<br>";
+		$newVersion=$version;
     }
 }
 
