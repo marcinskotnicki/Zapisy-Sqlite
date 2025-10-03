@@ -35,7 +35,7 @@ foreach ($iterator as $file) {
     $path = $file->getPathname();
 
     // Skip backup folder and data folder
-    if (str_starts_with($path, $backupDir) || strpos($path, '/data/') !== false || strpos($path, '/backup/') !== false) {
+    if (str_starts_with($path, $backupDir) || strpos($path, '/data/') !== false || strpos($path, '/backup/') !== false || strpos($path, '/backup_') !== false) {
         continue;
     }
 
