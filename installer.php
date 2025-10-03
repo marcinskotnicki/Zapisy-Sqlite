@@ -36,7 +36,7 @@ $pdo->exec("
 
     CREATE TABLE games (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-		table_id INTEGER
+		table_id INTEGER,
         title TEXT NOT NULL,
 		weight REAL,
 		rating REAL,
