@@ -134,6 +134,8 @@ try {
         echo "✅ Default admin created (username: {$defaults['default_admin_user']}, password: {$defaults['default_admin_pass']})<br>";
     }
 	
+	INSERT OR IGNORE INTO settings (key, value) VALUES ('system_version', '1.0');
+	
 }catch (PDOException $e) {
     die("Database error: " . $e->getMessage());
 }
