@@ -14,7 +14,6 @@ if (file_exists($dbFile)) {
 $pdo = new PDO('sqlite:' . $dbFile);
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Example: Create a 'games' table
 $pdo->exec("
 	CREATE TABLE event (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -78,6 +77,7 @@ $pdo->exec("
 	CREATE TABLE admins (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		username TEXT UNIQUE NOT NULL,
+		email TEXT NOT NULL,
 		password TEXT NOT NULL -- hashed with password_hash()
 	);
 ");
