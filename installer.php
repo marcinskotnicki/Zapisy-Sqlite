@@ -117,6 +117,19 @@ try {
 	 foreach ($defaults as $key => $value) {
 		$stmt->execute([':key' => $key, ':value' => $value]);
 	}
+	
+	 // Create default admin if none exists
+    $check = $pdo->query("SELECT COUNT(*) FROM admins")->fetchColumn();
+    if ($check == 0) {
+        $stmt = $pdo->prepare("INSERT INTO admins (username, email, password) VALUES (?, ?, ?)");
+        $stmt->execute([
+            $defaults['default_admin_user'],
+            $defaults['default_admin_email'],
+            password_hash($defaults['default_admin_pass'], PASSWORD_DEFAULT)
+        ]);
+        echo "✅ Default admin created (username: {$defaults['default_admin_user']}, password: {$defaults['default_admin_pass']})<br>";
+    }
+	
 catch (PDOException $e) {
     die("Database error: " . $e->getMessage());
 }
