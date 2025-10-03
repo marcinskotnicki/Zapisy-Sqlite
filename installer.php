@@ -13,6 +13,7 @@ if (file_exists($dbFile)) {
 
 try {
 	$pdo = new PDO('sqlite:' . $dbFile);
+	$pdo->exec("PRAGMA foreign_keys = ON;");
 	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 	$pdo->exec("
@@ -25,6 +26,9 @@ try {
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			event_id INTEGER,
 			title TEXT,
+			date TEXT NOT NULL,
+			start_time TEXT NOT NULL,
+			end_time TEXT NOT NULL,
 			FOREIGN KEY (event_id) REFERENCES event(id)
 		);
 
@@ -107,7 +111,7 @@ try {
 			body TEXT,
 			sent_at INTEGER DEFAULT (strftime('%s','now')),
 			status TEXT
-		);
+		)
 	");
 
 	$defaults = include __DIR__ . "/settings.php";
@@ -130,7 +134,7 @@ try {
         echo "✅ Default admin created (username: {$defaults['default_admin_user']}, password: {$defaults['default_admin_pass']})<br>";
     }
 	
-catch (PDOException $e) {
+}catch (PDOException $e) {
     die("Database error: " . $e->getMessage());
 }
 echo "Installation complete. Database created.";
