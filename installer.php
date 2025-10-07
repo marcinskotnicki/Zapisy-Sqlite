@@ -115,7 +115,7 @@ try {
 			body TEXT,
 			sent_at INTEGER DEFAULT (strftime('%s','now')),
 			status TEXT
-		)
+		);
 		
 		 CREATE TABLE thumbnails (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
