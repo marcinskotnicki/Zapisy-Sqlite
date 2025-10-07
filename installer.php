@@ -29,6 +29,8 @@ try {
 			date TEXT NOT NULL,
 			start_time TEXT NOT NULL,
 			end_time TEXT NOT NULL,
+			start_time TEXT NOT NULL DEFAULT '12:00',
+			end_time TEXT NOT NULL DEFAULT '18:00',
 			FOREIGN KEY (event_id) REFERENCES event(id)
 		);
 
@@ -56,6 +58,7 @@ try {
 			proposer_email TEXT,
 			proposer_ip TEXT,
 			start_time TEXT,
+			status INTEGER DEFAULT 2,
 			FOREIGN KEY (table_id) REFERENCES game_table(id)
 		);
 
@@ -113,6 +116,12 @@ try {
 			sent_at INTEGER DEFAULT (strftime('%s','now')),
 			status TEXT
 		)
+		
+		 CREATE TABLE thumbnails (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            thumbnail_url TEXT NOT NULL,
+            thumbnail_name TEXT NOT NULL
+         )
 	");
 
 	$defaults = include __DIR__ . "/settings.php";
@@ -135,7 +144,7 @@ try {
         echo "✅ Default admin created (username: {$defaults['default_admin_user']}, password: {$defaults['default_admin_pass']})<br>";
     }
 	
-	$pdo->exec("INSERT OR IGNORE INTO settings (key, value) VALUES ('system_version', '1.0');");
+	$pdo->exec("INSERT OR IGNORE INTO settings (key, value) VALUES ('system_version', '1.2');");
 	
 }catch (PDOException $e) {
     die("Database error: " . $e->getMessage());
