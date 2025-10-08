@@ -27,8 +27,6 @@ try {
 			event_id INTEGER,
 			title TEXT,
 			date TEXT NOT NULL,
-			start_time TEXT NOT NULL,
-			end_time TEXT NOT NULL,
 			start_time TEXT NOT NULL DEFAULT '12:00',
 			end_time TEXT NOT NULL DEFAULT '18:00',
 			FOREIGN KEY (event_id) REFERENCES event(id)
@@ -58,7 +56,6 @@ try {
 			proposer_email TEXT,
 			proposer_ip TEXT,
 			start_time TEXT,
-			status INTEGER DEFAULT 2,
 			FOREIGN KEY (table_id) REFERENCES game_table(id)
 		);
 
@@ -92,7 +89,7 @@ try {
 		
 		CREATE TABLE settings (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
-			key TEXT KEY,
+			key TEXT UNIQUE,
 			value TEXT NOT NULL
 		);
 		
